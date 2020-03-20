@@ -4,4 +4,5 @@
     <string name="title_dashboard">Bibliothèque</string>
     <string name="title_home">Accueil</string>
     <string name="title_login">Connexion</string>
+    <string name="manga_list">Mangas à la une</string>
 </resources>

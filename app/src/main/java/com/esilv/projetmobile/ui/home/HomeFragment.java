@@ -103,7 +103,7 @@ public class HomeFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         KitsuService service = retrofit.create(KitsuService.class);
-        Call<KitsuManga> call = service.getKitsuManga();
+        Call<KitsuManga> call = service.getKitsuTrendingManga();
         call.enqueue(new Callback<KitsuManga>() {
             @Override
             public void onResponse(Call<KitsuManga> call, Response<KitsuManga> response) {
@@ -128,13 +128,6 @@ public class HomeFragment extends Fragment {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        final TextView textView = root.findViewById(R.id.text_home);
-        homeViewModel.getText().observe(this, new Observer<String>() {
-            @Override
-            public void onChanged(@Nullable String s) {
-                textView.setText(s);
-            }
-        });
         RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
         loadManga(recyclerView);
         return root;
