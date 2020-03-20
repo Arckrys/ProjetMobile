@@ -3,5 +3,6 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Library</string>
     <string name="title_login">Login</string>
-    <string name="manga_list">Trending mangas</string>
+    <string name="manga_trending_list">Trending mangas</string>
+    <string name="anime_trending_list">Trending animes</string>
 </resources>

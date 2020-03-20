@@ -46,6 +46,8 @@ public class HomeFragment extends Fragment {
     public class attributes{
         @SerializedName("synopsis")
         String synopsis;
+        @SerializedName("canonicalTitle")
+        String canonicalTitle;
         @SerializedName("titles")
         titles titles;
         @SerializedName("averageRating")
@@ -122,14 +124,41 @@ public class HomeFragment extends Fragment {
 
     }
 
+    public void loadAnime(final RecyclerView recyclerView){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://kitsu.io")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        KitsuService service = retrofit.create(KitsuService.class);
+        Call<KitsuManga> call = service.getKitsuTrendingAnime();
+        call.enqueue(new Callback<KitsuManga>() {
+            @Override
+            public void onResponse(Call<KitsuManga> call, Response<KitsuManga> response) {
+                KitsuManga result = response.body();
+                MangaAdapter adapter = new MangaAdapter(result);
+                recyclerView.setAdapter(adapter);
+
+
+
+            }
+
+            @Override
+            public void onFailure(Call<KitsuManga> call, Throwable t) {
+            }
+        });
+
+    }
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
                 ViewModelProviders.of(this).get(HomeViewModel.class);
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        RecyclerView recyclerView = root.findViewById(R.id.recyclerView);
-        loadManga(recyclerView);
+        RecyclerView recyclerViewManga = root.findViewById(R.id.recyclerViewManga);
+        loadManga(recyclerViewManga);
+        RecyclerView recyclerViewAnime = root.findViewById(R.id.recyclerViewAnime);
+        loadAnime(recyclerViewAnime);
         return root;
     }
 }

@@ -61,7 +61,7 @@ public class MangaAdapter extends RecyclerView.Adapter<MangaAdapter.MangaViewHol
         HomeFragment.data results = mDataList.get(position);
 
         TextView title = holder.mangaTitle;
-        title.setText(results.attributes.titles.englishTitle);
+        title.setText(results.attributes.canonicalTitle);
         new DownloadImageTask(holder.mangaImage).execute(results.attributes.posterImage.posterURL);
 
 
