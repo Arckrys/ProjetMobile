@@ -105,8 +105,8 @@ public class HomeFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         KitsuService service = retrofit.create(KitsuService.class);
-        Call<KitsuManga> call = service.getKitsuTrendingManga();
-        call.enqueue(new Callback<KitsuManga>() {
+        //Call<KitsuManga> call = service.getKitsuTrendingManga();
+        /*call.enqueue(new Callback<KitsuManga>() {
             @Override
             public void onResponse(Call<KitsuManga> call, Response<KitsuManga> response) {
                 KitsuManga result = response.body();
@@ -120,7 +120,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(Call<KitsuManga> call, Throwable t) {
             }
-        });
+        });*/
 
     }
 
