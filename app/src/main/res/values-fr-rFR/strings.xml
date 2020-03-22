@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ProjetMobile</string>
+    <string name="title_dashboard">Bibliothèque</string>
+    <string name="title_home">Accueil</string>
+    <string name="title_login">Connexion</string>
+    <string name="manga_trending_list">Mangas à la une</string>
+    <string name="anime_trending_list">Anime à la une</string>
+</resources>
