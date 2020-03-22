@@ -17,10 +17,11 @@
     <TextView
         android:id="@+id/mangaTitle"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:text="TextView"
         android:maxEms="7"
         android:textAlignment="center"
         app:layout_constraintEnd_toEndOf="@+id/mangaImage"
-        app:layout_constraintStart_toStartOf="@id/mangaImage"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/mangaImage" />
 </androidx.constraintlayout.widget.ConstraintLayout>

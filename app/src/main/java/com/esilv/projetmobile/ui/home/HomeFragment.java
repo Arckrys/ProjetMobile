@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -23,9 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.esilv.projetmobile.KitsuService;
 import com.esilv.projetmobile.R;
-import com.esilv.projetmobile.ui.search.SearchFragment;
-import com.esilv.projetmobile.ui.search.SearchViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.InputStream;
@@ -153,13 +149,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void swapFragment(){
-        SearchFragment newSearchFragment = new SearchFragment();
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.nav_view, newSearchFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -169,13 +159,6 @@ public class HomeFragment extends Fragment {
         loadManga(recyclerViewManga);
         RecyclerView recyclerViewAnime = root.findViewById(R.id.recyclerViewAnime);
         loadAnime(recyclerViewAnime);
-        FloatingActionButton searchButton = root.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                swapFragment();
-            }
-        });
         return root;
     }
 }
