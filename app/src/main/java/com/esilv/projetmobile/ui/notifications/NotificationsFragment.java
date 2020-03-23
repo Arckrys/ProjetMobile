@@ -1,5 +1,6 @@
 package com.esilv.projetmobile.ui.notifications;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
@@ -17,10 +18,13 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.esilv.projetmobile.KitsuService;
+import com.esilv.projetmobile.MainActivity;
 import com.esilv.projetmobile.R;
+import com.esilv.projetmobile.UserPage;
 import com.esilv.projetmobile.ui.home.HomeFragment;
 import com.esilv.projetmobile.ui.home.MangaAdapter;
 import com.google.gson.annotations.SerializedName;
@@ -85,19 +89,21 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                String user = username.getText().toString();
+                /*String user = username.getText().toString();
                 SharedPreferences.Editor edit = sharedPreferences.edit();
                 edit.putString(PREFS_USER, user);
                 edit.commit();
                 String pass = password.getText().toString();
-                LoginUser(user, pass);
+                LoginUser(user, pass, v);*/
+                Navigation.findNavController(v).navigate(R.id.action_navigation_notifications_to_navigation_user_page);
+
             }
         });
 
 
         return root;
     }
-    public void LoginUser(String user, String pass){
+    public void LoginUser(String user, String pass, final View v){
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://kitsu.io")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -108,11 +114,12 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onResponse(Call<KitsuLogin> call, Response<KitsuLogin> response) {
                 KitsuLogin result = response.body();
-                
+
             }
 
             @Override
             public void onFailure(Call<KitsuLogin> call, Throwable t) {
+
             }
         });
 

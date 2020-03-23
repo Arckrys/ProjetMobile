@@ -5,4 +5,7 @@
     <string name="title_login">Login</string>
     <string name="manga_trending_list">Trending mangas</string>
     <string name="anime_trending_list">Trending animes</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
