@@ -1,6 +1,7 @@
 package com.esilv.projetmobile;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -10,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.fragment.app.Fragment;
@@ -28,8 +30,50 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+import static android.content.Context.MODE_PRIVATE;
+import static com.esilv.projetmobile.ui.notifications.NotificationsFragment.PREFS;
+import static com.esilv.projetmobile.ui.notifications.NotificationsFragment.PREFS_ACCESS;
+import static com.esilv.projetmobile.ui.notifications.NotificationsFragment.PREFS_INDEX;
+import static com.esilv.projetmobile.ui.notifications.NotificationsFragment.PREFS_USER;
+
 
 public class UserPage extends Fragment {
+    SharedPreferences sharedPreferences;
+    EditText indexAnime;
+
+    public class KitsuUser{
+        @SerializedName("data")
+        List<UserData> dataList;
+    }
+    public class UserData {
+        @SerializedName("id")
+        String id;
+    }
+
+
+    public class KitsuBibliAnime{
+        @SerializedName("data")
+        List<dataAn> dataList;
+    }
+    public class dataAn {
+        @SerializedName("id")
+        String id;
+        @SerializedName("relationships")
+        Relationship relationship;
+    }
+
+    public class Relationship{
+        @SerializedName("anime")
+        Anime anime;
+    }
+    public class Anime{
+        @SerializedName("links")
+        Link link;
+    }
+    public class Link{
+        @SerializedName("related")
+        String url;
+    }
 
     public class KitsuBibli{
         @SerializedName("data")
@@ -94,45 +138,87 @@ public class UserPage extends Fragment {
     }
 
     public void loadBibli(final RecyclerView recyclerView){
-        Retrofit retrofit = new Retrofit.Builder()
+        sharedPreferences = getContext().getSharedPreferences(PREFS, MODE_PRIVATE);
+        final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://kitsu.io")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        KitsuService service = retrofit.create(KitsuService.class);
-        Call<KitsuBibli> call = service.getKitsuBibli();
-        call.enqueue(new Callback<KitsuBibli>() {
+        final KitsuService service = retrofit.create(KitsuService.class);
+        Call<KitsuBibliAnime> call = service.getKitsuBibliAnime(sharedPreferences.getString(PREFS_ACCESS, ""));
+        call.enqueue(new Callback<KitsuBibliAnime>() {
             @Override
-            public void onResponse(Call<KitsuBibli> call, Response<KitsuBibli> response) {
-                KitsuBibli result = response.body();
-                BibliAdapter adapter = new BibliAdapter(result);
+            public void onResponse(Call<KitsuBibliAnime> call, Response<KitsuBibliAnime> response) {
+                KitsuBibliAnime result = response.body();
+                SharedPreferences.Editor edit = sharedPreferences.edit();
+                edit.putString(PREFS_INDEX, result.dataList.get(0).id);
+                edit.commit();
+                int index;
+                final KitsuBibli resultBibli = null;
+                for (index = 0; index < result.dataList.size(); index++)
+                {
+                    Retrofit retrofitBis = new Retrofit.Builder()
+                            .baseUrl("https://kitsu.io")
+                            .addConverterFactory(GsonConverterFactory.create())
+                            .build();
+                    KitsuService serviceBis = retrofitBis.create(KitsuService.class);
+                    String url = result.dataList.get(index).relationship.anime.link.url;
+                    url.replace("https://kitsu.io/", "");
+                    Call<data> call2 = serviceBis.getKitsuBibli(result.dataList.get(index).relationship.anime.link.url);
+                    call2.enqueue(new Callback<data>() {
+                        @Override
+                        public void onResponse(Call<data> call, Response<data> response) {
+                            data resultAnime = response.body();
+                            resultBibli.dataList.add(resultAnime);
+                        }
+
+                        @Override
+                        public void onFailure(Call<data> call, Throwable t) {
+                        }
+                    });
+                }
+                BibliAdapter adapter = new BibliAdapter(resultBibli);
                 recyclerView.setAdapter(adapter);
-
-
-
             }
 
             @Override
-            public void onFailure(Call<KitsuBibli> call, Throwable t) {
+            public void onFailure(Call<KitsuBibliAnime> call, Throwable t) {
             }
         });
 
     }
 
-    /*@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }*/
+    public void GetUserID (final RecyclerView recyclerView){
+        sharedPreferences = getContext().getSharedPreferences(PREFS, MODE_PRIVATE);
+        final Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://kitsu.io")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        final KitsuService service = retrofit.create(KitsuService.class);
+        Call<KitsuUser> call = service.getKitsuUser("banane");
+        call.enqueue(new Callback<KitsuUser>() {
+            @Override
+            public void onResponse(Call<KitsuUser> call, Response<KitsuUser> response) {
+                KitsuUser result = response.body();
+                SharedPreferences.Editor edit = sharedPreferences.edit();
+                edit.putString(PREFS_ACCESS, result.dataList.get(0).id);
+                edit.commit();
+                loadBibli(recyclerView);
+            }
+            @Override
+            public void onFailure(Call<KitsuUser> call, Throwable t) {
+            }
+        });
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_user_page, container, false);
+        indexAnime = root.findViewById(R.id.test);
+
         RecyclerView recyclerViewBibli = root.findViewById(R.id.recyclerViewBibli);
-        loadBibli(recyclerViewBibli);
+        GetUserID(recyclerViewBibli);
+        indexAnime.setText(sharedPreferences.getString(PREFS_INDEX, ""));
         return root;
     }
 }

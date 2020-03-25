@@ -29,6 +29,7 @@ import com.esilv.projetmobile.ui.home.HomeFragment;
 import com.esilv.projetmobile.ui.home.MangaAdapter;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Console;
 import java.util.List;
 
 import retrofit2.Call;
@@ -44,21 +45,18 @@ public class NotificationsFragment extends Fragment {
     private NotificationsViewModel notificationsViewModel;
     EditText username;
     EditText password;
+    EditText access;
     Button login;
 
-    private static final String PREFS = "PREFS";
-    private static final String PREFS_USER= "PREFS_USER";
+    public static final String PREFS = "PREFS";
+    public static final String PREFS_USER= "PREFS_USER";
+    public static final String PREFS_ACCESS= "PREFS_ACCESS";
+    public static final String PREFS_INDEX= "PREFS_INDEX";
     SharedPreferences sharedPreferences;
 
     public class KitsuLogin {
-        @SerializedName("data")
-        List<data> dataList;
-    }
-    public class data{
         @SerializedName("access_token")
         String access_token;
-        @SerializedName("created_at")
-        List<data> created_at;
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -77,6 +75,7 @@ public class NotificationsFragment extends Fragment {
         login = root.findViewById(R.id.login);
         username = root.findViewById(R.id.username);
         password = root.findViewById(R.id.password);
+        access = root.findViewById(R.id.test);
         sharedPreferences = getContext().getSharedPreferences(PREFS, MODE_PRIVATE);
 
         if (sharedPreferences.contains(PREFS_USER)) {
@@ -84,18 +83,19 @@ public class NotificationsFragment extends Fragment {
 
         }
 
-        login.setOnClickListener(new OnClickListener()
+        login.setOnClickListener(new View.OnClickListener()
         {
             @Override
             public void onClick(View v) {
                 // TODO Auto-generated method stub
-                /*String user = username.getText().toString();
+                String user = username.getText().toString();
                 SharedPreferences.Editor edit = sharedPreferences.edit();
                 edit.putString(PREFS_USER, user);
                 edit.commit();
                 String pass = password.getText().toString();
-                LoginUser(user, pass, v);*/
-                Navigation.findNavController(v).navigate(R.id.action_navigation_notifications_to_navigation_user_page);
+                LoginUser(user, pass, v);
+                access.setText(sharedPreferences.getString(PREFS_ACCESS, ""));
+
 
             }
         });
@@ -114,6 +114,12 @@ public class NotificationsFragment extends Fragment {
             @Override
             public void onResponse(Call<KitsuLogin> call, Response<KitsuLogin> response) {
                 KitsuLogin result = response.body();
+                String access = result.access_token;
+                SharedPreferences.Editor edit = sharedPreferences.edit();
+                edit.putString(PREFS_ACCESS, access);
+                edit.commit();
+                Navigation.findNavController(v).navigate(R.id.action_navigation_notifications_to_navigation_user_page);
+
 
             }
 
