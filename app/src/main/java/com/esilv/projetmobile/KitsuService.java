@@ -11,6 +11,22 @@ import retrofit2.http.Query;
 
 
 public interface KitsuService {
+    @GET("/api/edge/manga")
+    Call<HomeFragment.KitsuManga> getKitsuManga();
+
+    @GET("/api/edge/anime")
+    Call<HomeFragment.KitsuManga> getKitsuAnime();
+
+    @GET("/api/edge/manga")
+    Call<HomeFragment.KitsuManga> getKitsuMangaSearch(
+            @Query("filter[text]") String search
+    );
+
+    @GET("/api/edge/anime")
+    Call<HomeFragment.KitsuManga> getKitsuAnimeSearch(
+            @Query("filter[text]") String search
+    );
+
     @GET("/api/edge/trending/manga")
     Call<HomeFragment.KitsuManga> getKitsuTrendingManga();
 

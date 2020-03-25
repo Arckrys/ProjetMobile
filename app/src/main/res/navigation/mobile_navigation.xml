@@ -9,17 +9,44 @@
         android:id="@+id/navigation_home"
         android:name="com.esilv.projetmobile.ui.home.HomeFragment"
         android:label="@string/title_home"
-        tools:layout="@layout/fragment_home" />
-
-    <fragment
-        android:id="@+id/navigation_dashboard"
-        android:name="com.esilv.projetmobile.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
-        tools:layout="@layout/fragment_dashboard" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_mangaInfo"
+            app:destination="@id/mangaInfo" />
+    </fragment>
 
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.esilv.projetmobile.ui.notifications.NotificationsFragment"
         android:label="@string/title_login"
         tools:layout="@layout/fragment_notifications" />
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="com.esilv.projetmobile.ui.search.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_navigation_search_to_mangaInfo"
+            app:destination="@id/mangaInfo" />
+    </fragment>
+    <fragment
+        android:id="@+id/mangaInfo"
+        android:name="com.esilv.projetmobile.MangaInfo"
+        android:label="fragment_manga_info"
+        tools:layout="@layout/fragment_manga_info" >
+        <argument
+            android:name="InfoImage"
+            app:argType="string" />
+        <argument android:name="InfoTitle" />
+        <argument
+            android:name="InfoRating"
+            app:argType="string" />
+        <argument
+            android:name="InfoStart"
+            app:argType="string" />
+        <argument
+            android:name="InfoEnd"
+            app:argType="string" />
+        <argument android:name="InfoDesc" />
+    </fragment>
 </navigation>

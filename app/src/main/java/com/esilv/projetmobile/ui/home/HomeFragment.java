@@ -17,6 +17,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.navigation.NavDirections;
+import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,40 +44,40 @@ public class HomeFragment extends Fragment {
 
     public class KitsuManga {
         @SerializedName("data")
-        List<data> dataList;
+        public List<data> dataList;
     }
     public class data {
         @SerializedName("attributes")
-        attributes attributes;
+        public attributes attributes;
     }
     public class attributes{
         @SerializedName("synopsis")
-        String synopsis;
+        public String synopsis;
         @SerializedName("canonicalTitle")
-        String canonicalTitle;
+        public String canonicalTitle;
         @SerializedName("titles")
-        titles titles;
+        public titles titles;
         @SerializedName("averageRating")
-        Double averageRating;
+        public String averageRating;
         @SerializedName("startDate")
-        String startDate;
+        public String startDate;
         @SerializedName("endDate")
-        String endDate;
+        public String endDate;
         @SerializedName("ageRating")
-        String ageRating;
+        public String ageRating;
         @SerializedName("posterImage")
-        posterImage posterImage;
+        public posterImage posterImage;
 
     }
     public class titles{
         @SerializedName("en")
-        String englishTitle;
+        public String englishTitle;
         @SerializedName("en_jp")
-        String japaneseTitle;
+        public String japaneseTitle;
     }
     public class posterImage {
         @SerializedName("medium")
-        String posterURL;
+        public String posterURL;
     }
     public class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
@@ -153,13 +156,7 @@ public class HomeFragment extends Fragment {
 
     }
 
-    private void swapFragment(){
-        SearchFragment newSearchFragment = new SearchFragment();
-        FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.nav_view, newSearchFragment);
-        fragmentTransaction.addToBackStack(null);
-        fragmentTransaction.commit();
-    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         homeViewModel =
@@ -169,13 +166,6 @@ public class HomeFragment extends Fragment {
         loadManga(recyclerViewManga);
         RecyclerView recyclerViewAnime = root.findViewById(R.id.recyclerViewAnime);
         loadAnime(recyclerViewAnime);
-        FloatingActionButton searchButton = root.findViewById(R.id.searchButton);
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                swapFragment();
-            }
-        });
         return root;
     }
 }

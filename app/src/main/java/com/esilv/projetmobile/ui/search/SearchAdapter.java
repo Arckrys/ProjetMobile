@@ -1,4 +1,4 @@
-package com.esilv.projetmobile.ui.home;
+package com.esilv.projetmobile.ui.search;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,61 +15,67 @@ import android.widget.TextView;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.esilv.projetmobile.MainActivity;
 import com.esilv.projetmobile.R;
+import com.esilv.projetmobile.ui.home.HomeFragment;
 
 import java.io.InputStream;
 import java.util.List;
 
 
-public class MangaAdapter extends RecyclerView.Adapter<MangaAdapter.MangaViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchViewHolder> {
     private List<HomeFragment.data> mDataList;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class MangaViewHolder extends RecyclerView.ViewHolder {
+    public static class SearchViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
-        public TextView mangaTitle;
-        public ImageView mangaImage;
-        public MangaViewHolder(View v) {
+        public TextView SearchTitle;
+        public TextView SearchDesc;
+        public ImageView SearchImage;
+        public SearchViewHolder(View v) {
             super(v);
-            mangaTitle = (TextView) v.findViewById(R.id.mangaTitle);
-            mangaImage = (ImageView) v.findViewById(R.id.mangaImage);
+            SearchTitle = (TextView) v.findViewById(R.id.SearchTitle);
+            SearchImage = (ImageView) v.findViewById(R.id.SearchImage);
+            SearchDesc = (TextView) v.findViewById((R.id.SearchDesc));
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MangaAdapter(HomeFragment.KitsuManga myResults) {
+    public SearchAdapter(HomeFragment.KitsuManga myResults) {
         mDataList = myResults.dataList;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MangaAdapter.MangaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public SearchAdapter.SearchViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View mangaView = inflater.inflate(R.layout.manga_recycler,parent,false);
-        return new MangaViewHolder(mangaView);
+        View searchView = inflater.inflate(R.layout.search_recycler,parent,false);
+        return new SearchViewHolder(searchView);
     }
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MangaViewHolder holder, int position) {
+    public void onBindViewHolder(SearchViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         HomeFragment.data results = mDataList.get(position);
 
-        TextView title = holder.mangaTitle;
-        title.setText(results.attributes.canonicalTitle);
-        new DownloadImageTask(holder.mangaImage).execute(results.attributes.posterImage.posterURL);
+        TextView title = holder.SearchTitle;
+        String titleText = "Title : " + results.attributes.canonicalTitle;
+        title.setText(titleText);
+        TextView desc = holder.SearchDesc;
+        String descText = "Synopsis : " + results.attributes.synopsis;
+        desc.setText(descText);
+        new DownloadImageTask(holder.SearchImage).execute(results.attributes.posterImage.posterURL);
         Bundle bundle = new Bundle();
         bundle.putString("InfoTitle", results.attributes.canonicalTitle);
         bundle.putString("InfoImage",results.attributes.posterImage.posterURL);
         bundle.putString("InfoDesc",results.attributes.synopsis);
-        bundle.putString("InfoRating",results.attributes.averageRating.toString());
+        bundle.putString("InfoRating",results.attributes.averageRating);
         bundle.putString("InfoStart",results.attributes.startDate);
         if(results.attributes.endDate == null){
             bundle.putString("InfoEnd","ongoing");
@@ -77,8 +83,7 @@ public class MangaAdapter extends RecyclerView.Adapter<MangaAdapter.MangaViewHol
         else{
             bundle.putString("InfoEnd",results.attributes.endDate);
         }
-
-        holder.mangaImage.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_home_to_mangaInfo, bundle));
+        holder.SearchImage.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_search_to_mangaInfo, bundle));
 
 
     }
