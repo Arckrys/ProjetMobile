@@ -79,7 +79,6 @@ public class SearchFragment extends Fragment {
         final TextView searchText = root.findViewById(R.id.searchText);
         final Button searchButton = root.findViewById((R.id.searchButton2));
         final RecyclerView searchRecycler = root.findViewById(R.id.searchRecycler);
-        final TextView textView = root.findViewById(R.id.textView);
         loadSearch(searchRecycler,manga_check.isChecked(),searchText.getText().toString());
         manga_check.setOnClickListener(new View.OnClickListener() {
             @Override

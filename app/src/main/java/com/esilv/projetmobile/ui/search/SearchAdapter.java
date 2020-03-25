@@ -84,6 +84,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchView
             bundle.putString("InfoEnd",results.attributes.endDate);
         }
         holder.SearchImage.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_search_to_mangaInfo, bundle));
+        holder.SearchDesc.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_search_to_mangaInfo, bundle));
+        holder.SearchTitle.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_search_to_mangaInfo, bundle));
 
 
     }
