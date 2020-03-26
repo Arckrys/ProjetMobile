@@ -296,14 +296,14 @@ public class UserPage extends Fragment {
 
                     //resultAni.add(GetAnime(url).datasimple);
 
-                    Call<KitsuSimple> call2 = service.getKitsuBibli(url2);
+                    Call<KitsuSimple> call2 = service.getKitsuBibli("17641027");
                     call2.enqueue(new Callback<KitsuSimple>() {
                         @Override
                         public void onResponse(Call<KitsuSimple> call, Response<KitsuSimple> response) {
                             KitsuSimple resultAnime = response.body();
                             resultBibli.dataList.add(resultAnime.datasimple);
                             SharedPreferences.Editor edit = sharedPreferences.edit();
-                            String string = String.valueOf(resultBibli.dataList.size());
+                            String string = String.valueOf(resultBibli.dataList.get(0).attributes.canonicalTitle);
                             edit.putString(PREFS_INDEX, string);
                             edit.commit();
                             if (resultBibli.dataList.size() == 10){
@@ -345,7 +345,7 @@ public class UserPage extends Fragment {
         SharedPreferences.Editor edit = sharedPreferences.edit();
         edit.putString(PREFS_INDEX, url);
         edit.commit();
-        Call<KitsuSimple> call = service.getKitsuBibli(url2);
+        Call<KitsuSimple> call = service.getKitsuBibli(url);
         call.enqueue(new Callback<KitsuSimple>() {
             @Override
             public void onResponse(Call<KitsuSimple> call, Response<KitsuSimple> response) {
