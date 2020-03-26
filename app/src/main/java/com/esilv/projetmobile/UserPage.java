@@ -85,6 +85,10 @@ public class UserPage extends Fragment {
     public class KitsuBibli{
         @SerializedName("data")
         List<data> dataList;
+
+        public KitsuBibli(List<data> dataList) {
+            this.dataList = dataList;
+        }
     }
     public class KitsuSimple{
         @SerializedName("data")
@@ -161,151 +165,23 @@ public class UserPage extends Fragment {
             public void onResponse(Call<KitsuBibliAnime> call, Response<KitsuBibliAnime> response) {
                 KitsuBibliAnime result = response.body();
                 int index;
-                final KitsuBibli resultBibli = new KitsuBibli();
-                resultBibli.dataList = new List<data>() {
-                    @Override
-                    public int size() {
-                        return 0;
-                    }
-
-                    @Override
-                    public boolean isEmpty() {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean contains(@Nullable Object o) {
-                        return false;
-                    }
-
-                    @NonNull
-                    @Override
-                    public Iterator<data> iterator() {
-                        return null;
-                    }
-
-                    @NonNull
-                    @Override
-                    public Object[] toArray() {
-                        return new Object[0];
-                    }
-
-                    @NonNull
-                    @Override
-                    public <T> T[] toArray(@NonNull T[] a) {
-                        return null;
-                    }
-
-                    @Override
-                    public boolean add(data data) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean remove(@Nullable Object o) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean containsAll(@NonNull Collection<?> c) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean addAll(@NonNull Collection<? extends data> c) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean addAll(int index, @NonNull Collection<? extends data> c) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean removeAll(@NonNull Collection<?> c) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean retainAll(@NonNull Collection<?> c) {
-                        return false;
-                    }
-
-                    @Override
-                    public void clear() {
-
-                    }
-
-                    @Override
-                    public data get(int index) {
-                        return null;
-                    }
-
-                    @Override
-                    public data set(int index, data element) {
-                        return null;
-                    }
-
-                    @Override
-                    public void add(int index, data element) {
-
-                    }
-
-                    @Override
-                    public data remove(int index) {
-                        return null;
-                    }
-
-                    @Override
-                    public int indexOf(@Nullable Object o) {
-                        return 0;
-                    }
-
-                    @Override
-                    public int lastIndexOf(@Nullable Object o) {
-                        return 0;
-                    }
-
-                    @NonNull
-                    @Override
-                    public ListIterator<data> listIterator() {
-                        return null;
-                    }
-
-                    @NonNull
-                    @Override
-                    public ListIterator<data> listIterator(int index) {
-                        return null;
-                    }
-
-                    @NonNull
-                    @Override
-                    public List<data> subList(int fromIndex, int toIndex) {
-                        return null;
-                    }
-                };
-                ArrayList<data> resultAni = new ArrayList<>(10);
+                ArrayList<data> resultAni = new ArrayList<>();
+                final KitsuBibli resultBibli = new KitsuBibli(resultAni);
                 for (index = 0; index < 10; index++)
                 {
                     String url = result.dataList.get(index).relationship.anime.link.url;
                     url = url.replace("https://kitsu.io/api/edge/library-entries/", "");
                     url = url.replace("/anime", "");
-                    int url2;
-                    url2 = Integer.parseInt(url);
-                    //GetAnime(url, recyclerView);
-
-                    //resultAni.add(GetAnime(url).datasimple);
-
-                    Call<KitsuSimple> call2 = service.getKitsuBibli("17641027");
+                    url.trim();
+                    SharedPreferences.Editor edit = sharedPreferences.edit();
+                    edit.putString(PREFS_INDEX, url);
+                    edit.commit();
+                    Call<KitsuSimple> call2 = service.getKitsuBibli(url);
                     call2.enqueue(new Callback<KitsuSimple>() {
                         @Override
                         public void onResponse(Call<KitsuSimple> call, Response<KitsuSimple> response) {
                             KitsuSimple resultAnime = response.body();
                             resultBibli.dataList.add(resultAnime.datasimple);
-                            SharedPreferences.Editor edit = sharedPreferences.edit();
-                            String string = String.valueOf(resultBibli.dataList.get(0).attributes.posterImage);
-                            edit.putString(PREFS_INDEX, string);
-                            edit.commit();
                             if (resultBibli.dataList.size() == 10){
                                 BibliAdapter adapter = new BibliAdapter(resultBibli);
                                 recyclerView.setAdapter(adapter);

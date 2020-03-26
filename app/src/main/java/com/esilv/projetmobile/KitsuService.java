@@ -29,8 +29,8 @@ public interface KitsuService {
                                                          @Query("username") String username,
                                                          @Query("password") String password);
 
-    @GET("/api/edge/library-entries?filter[userId]=<id>")
-    Call<UserPage.KitsuBibliAnime> getKitsuBibliAnime(@Query("filter[userId]") String access);
+    @GET("/api/edge/users/{id}/library-entries")
+    Call<UserPage.KitsuBibliAnime> getKitsuBibliAnime(@Path("id") String id);
 
     @GET("/api/edge/library-entries/{id}/anime")
     Call<UserPage.KitsuSimple> getKitsuBibli(@Path ("id") String id);
