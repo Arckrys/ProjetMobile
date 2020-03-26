@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.esilv.projetmobile.ui.home.HomeFragment;
@@ -63,7 +65,20 @@ public class BibliAdapter extends RecyclerView.Adapter<BibliAdapter.BibliViewHol
         TextView title = holder.mangaTitle;
         title.setText(results.attributes.canonicalTitle);
         new DownloadImageTask(holder.mangaImage).execute(results.attributes.posterImage.posterURL);
-
+        Bundle bundle = new Bundle();
+        bundle.putString("InfoTitle", results.attributes.canonicalTitle);
+        bundle.putString("InfoImage",results.attributes.posterImage.posterURL);
+        bundle.putString("InfoDesc",results.attributes.synopsis);
+        bundle.putString("InfoRating",results.attributes.averageRating);
+        bundle.putString("InfoStart",results.attributes.startDate);
+        if(results.attributes.endDate == null){
+            bundle.putString("InfoEnd","ongoing");
+        }
+        else{
+            bundle.putString("InfoEnd",results.attributes.endDate);
+        }
+        holder.mangaImage.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_user_page_to_mangaInfo, bundle));
+        holder.mangaTitle.setOnClickListener(Navigation.createNavigateOnClickListener(R.id.action_navigation_user_page_to_mangaInfo, bundle));
 
     }
 

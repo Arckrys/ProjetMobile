@@ -107,7 +107,7 @@ public class UserPage extends Fragment {
         @SerializedName("titles")
         titles titles;
         @SerializedName("averageRating")
-        Double averageRating;
+        String averageRating;
         @SerializedName("startDate")
         String startDate;
         @SerializedName("endDate")

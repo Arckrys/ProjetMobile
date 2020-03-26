@@ -28,7 +28,11 @@
         android:id="@+id/navigation_user_page"
         android:name="com.esilv.projetmobile.UserPage"
         android:label="UserPage"
-        tools:layout="@layout/fragment_user_page" />
+        tools:layout="@layout/fragment_user_page" >
+        <action
+            android:id="@+id/action_navigation_user_page_to_mangaInfo"
+            app:destination="@id/mangaInfo" />
+    </fragment>
     <fragment
         android:id="@+id/navigation_search"
         android:name="com.esilv.projetmobile.ui.search.SearchFragment"
