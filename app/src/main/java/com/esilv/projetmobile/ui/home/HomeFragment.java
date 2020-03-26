@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.NavDirections;
@@ -26,9 +25,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.esilv.projetmobile.KitsuService;
 import com.esilv.projetmobile.R;
-import com.esilv.projetmobile.ui.search.SearchFragment;
-import com.esilv.projetmobile.ui.search.SearchViewModel;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.InputStream;
@@ -112,8 +108,8 @@ public class HomeFragment extends Fragment {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         KitsuService service = retrofit.create(KitsuService.class);
-        Call<KitsuManga> call = service.getKitsuTrendingManga();
-        call.enqueue(new Callback<KitsuManga>() {
+        //Call<KitsuManga> call = service.getKitsuTrendingManga();
+        /*call.enqueue(new Callback<KitsuManga>() {
             @Override
             public void onResponse(Call<KitsuManga> call, Response<KitsuManga> response) {
                 KitsuManga result = response.body();
@@ -127,7 +123,7 @@ public class HomeFragment extends Fragment {
             @Override
             public void onFailure(Call<KitsuManga> call, Throwable t) {
             }
-        });
+        });*/
 
     }
 
