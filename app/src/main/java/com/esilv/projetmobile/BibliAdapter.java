@@ -38,8 +38,8 @@ public class BibliAdapter extends RecyclerView.Adapter<BibliAdapter.BibliViewHol
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public BibliAdapter(UserPage.KitsuSimple myResults) {
-        mDataList.add(myResults.datasimple);
+    public BibliAdapter(UserPage.KitsuBibli myResults) {
+        mDataList = myResults.dataList;
     }
 
     // Create new views (invoked by the layout manager)

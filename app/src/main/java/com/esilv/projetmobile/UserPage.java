@@ -162,34 +162,163 @@ public class UserPage extends Fragment {
                 KitsuBibliAnime result = response.body();
                 int index;
                 final KitsuBibli resultBibli = new KitsuBibli();
+                resultBibli.dataList = new List<data>() {
+                    @Override
+                    public int size() {
+                        return 0;
+                    }
+
+                    @Override
+                    public boolean isEmpty() {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean contains(@Nullable Object o) {
+                        return false;
+                    }
+
+                    @NonNull
+                    @Override
+                    public Iterator<data> iterator() {
+                        return null;
+                    }
+
+                    @NonNull
+                    @Override
+                    public Object[] toArray() {
+                        return new Object[0];
+                    }
+
+                    @NonNull
+                    @Override
+                    public <T> T[] toArray(@NonNull T[] a) {
+                        return null;
+                    }
+
+                    @Override
+                    public boolean add(data data) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean remove(@Nullable Object o) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean containsAll(@NonNull Collection<?> c) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean addAll(@NonNull Collection<? extends data> c) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean addAll(int index, @NonNull Collection<? extends data> c) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean removeAll(@NonNull Collection<?> c) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean retainAll(@NonNull Collection<?> c) {
+                        return false;
+                    }
+
+                    @Override
+                    public void clear() {
+
+                    }
+
+                    @Override
+                    public data get(int index) {
+                        return null;
+                    }
+
+                    @Override
+                    public data set(int index, data element) {
+                        return null;
+                    }
+
+                    @Override
+                    public void add(int index, data element) {
+
+                    }
+
+                    @Override
+                    public data remove(int index) {
+                        return null;
+                    }
+
+                    @Override
+                    public int indexOf(@Nullable Object o) {
+                        return 0;
+                    }
+
+                    @Override
+                    public int lastIndexOf(@Nullable Object o) {
+                        return 0;
+                    }
+
+                    @NonNull
+                    @Override
+                    public ListIterator<data> listIterator() {
+                        return null;
+                    }
+
+                    @NonNull
+                    @Override
+                    public ListIterator<data> listIterator(int index) {
+                        return null;
+                    }
+
+                    @NonNull
+                    @Override
+                    public List<data> subList(int fromIndex, int toIndex) {
+                        return null;
+                    }
+                };
                 ArrayList<data> resultAni = new ArrayList<>(10);
                 for (index = 0; index < 10; index++)
                 {
                     String url = result.dataList.get(index).relationship.anime.link.url;
                     url = url.replace("https://kitsu.io/api/edge/library-entries/", "");
                     url = url.replace("/anime", "");
-                    GetAnime(url, recyclerView);
+                    int url2;
+                    url2 = Integer.parseInt(url);
+                    //GetAnime(url, recyclerView);
 
                     //resultAni.add(GetAnime(url).datasimple);
 
-                    /*Call<data> call2 = service.getKitsuBibli(url);
-                    call2.enqueue(new Callback<data>() {
+                    Call<KitsuSimple> call2 = service.getKitsuBibli(url2);
+                    call2.enqueue(new Callback<KitsuSimple>() {
                         @Override
-                        public void onResponse(Call<data> call, Response<data> response) {
-                            data resultAnime = response.body();
+                        public void onResponse(Call<KitsuSimple> call, Response<KitsuSimple> response) {
+                            KitsuSimple resultAnime = response.body();
+                            resultBibli.dataList.add(resultAnime.datasimple);
                             SharedPreferences.Editor edit = sharedPreferences.edit();
-                            edit.putString(PREFS_INDEX, "null2");
+                            String string = String.valueOf(resultBibli.dataList.size());
+                            edit.putString(PREFS_INDEX, string);
                             edit.commit();
-                            resultBibli.dataList.add(resultAnime);
+                            if (resultBibli.dataList.size() == 10){
+                                BibliAdapter adapter = new BibliAdapter(resultBibli);
+                                recyclerView.setAdapter(adapter);
+                            }
                         }
 
                         @Override
-                        public void onFailure(Call<data> call, Throwable t) {
+                        public void onFailure(Call<KitsuSimple> call, Throwable t) {
                             SharedPreferences.Editor edit = sharedPreferences.edit();
                             edit.putString(PREFS_INDEX, "null3");
                             edit.commit();
                         }
-                    });*/
+                    });
                 }
                 //resultBibli.dataList = resultAni;
                 //BibliAdapter adapter = new BibliAdapter(resultBibli);
@@ -224,8 +353,8 @@ public class UserPage extends Fragment {
                 SharedPreferences.Editor edit = sharedPreferences.edit();
                 edit.putString(PREFS_INDEX, "null4");
                 edit.commit();
-                BibliAdapter adapter = new BibliAdapter(resultAnime);
-                recyclerView.setAdapter(adapter);
+                //BibliAdapter adapter = new BibliAdapter(resultAnime);
+                //recyclerView.setAdapter(adapter);
                 //resultBibli2.add(resultAnime);
             }
 
