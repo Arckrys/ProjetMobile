@@ -17,10 +17,11 @@ import com.esilv.projetmobile.ui.home.HomeFragment;
 import com.esilv.projetmobile.ui.home.MangaAdapter;
 
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 public class BibliAdapter extends RecyclerView.Adapter<BibliAdapter.BibliViewHolder>{
-    private List<UserPage.data> mDataList;
+    private List<UserPage.data> mDataList =  new ArrayList<>();
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -37,8 +38,8 @@ public class BibliAdapter extends RecyclerView.Adapter<BibliAdapter.BibliViewHol
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public BibliAdapter(UserPage.KitsuBibli myResults) {
-        mDataList = myResults.dataList;
+    public BibliAdapter(UserPage.KitsuSimple myResults) {
+        mDataList.add(myResults.datasimple);
     }
 
     // Create new views (invoked by the layout manager)

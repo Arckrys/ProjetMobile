@@ -14,6 +14,8 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -22,7 +24,11 @@ import com.esilv.projetmobile.ui.home.MangaAdapter;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -40,6 +46,7 @@ import static com.esilv.projetmobile.ui.notifications.NotificationsFragment.PREF
 public class UserPage extends Fragment {
     SharedPreferences sharedPreferences;
     EditText indexAnime;
+
 
     public class KitsuUser{
         @SerializedName("data")
@@ -154,14 +161,16 @@ public class UserPage extends Fragment {
             public void onResponse(Call<KitsuBibliAnime> call, Response<KitsuBibliAnime> response) {
                 KitsuBibliAnime result = response.body();
                 int index;
-                final KitsuBibli resultBibli = null;
-                List<data> resultAni = null;
+                final KitsuBibli resultBibli = new KitsuBibli();
+                ArrayList<data> resultAni = new ArrayList<>(10);
                 for (index = 0; index < 10; index++)
                 {
                     String url = result.dataList.get(index).relationship.anime.link.url;
                     url = url.replace("https://kitsu.io/api/edge/library-entries/", "");
                     url = url.replace("/anime", "");
-                    resultAni.add(GetAnime(url).datasimple);
+                    GetAnime(url, recyclerView);
+
+                    //resultAni.add(GetAnime(url).datasimple);
 
                     /*Call<data> call2 = service.getKitsuBibli(url);
                     call2.enqueue(new Callback<data>() {
@@ -182,9 +191,9 @@ public class UserPage extends Fragment {
                         }
                     });*/
                 }
-                resultBibli.dataList = resultAni;
-                BibliAdapter adapter = new BibliAdapter(resultBibli);
-                recyclerView.setAdapter(adapter);
+                //resultBibli.dataList = resultAni;
+                //BibliAdapter adapter = new BibliAdapter(resultBibli);
+                //recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -194,9 +203,9 @@ public class UserPage extends Fragment {
 
     }
 
-    public KitsuSimple GetAnime (String url)
+    public void GetAnime (String url, final RecyclerView recyclerView)
     {
-        final List<KitsuSimple> resultBibli = null;
+        final ArrayList<KitsuSimple> resultBibli2 = new ArrayList<>();
         final Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl("https://kitsu.io")
                 .addConverterFactory(GsonConverterFactory.create())
@@ -204,23 +213,31 @@ public class UserPage extends Fragment {
         final KitsuService service = retrofit.create(KitsuService.class);
         int url2;
         url2 = Integer.parseInt(url);
-        Call<KitsuSimple> call = service.getKitsuBibli(17641027);
+        SharedPreferences.Editor edit = sharedPreferences.edit();
+        edit.putString(PREFS_INDEX, url);
+        edit.commit();
+        Call<KitsuSimple> call = service.getKitsuBibli(url2);
         call.enqueue(new Callback<KitsuSimple>() {
             @Override
             public void onResponse(Call<KitsuSimple> call, Response<KitsuSimple> response) {
                 KitsuSimple resultAnime = response.body();
                 SharedPreferences.Editor edit = sharedPreferences.edit();
-                edit.putString(PREFS_INDEX, "null2");
+                edit.putString(PREFS_INDEX, "null4");
                 edit.commit();
-                resultBibli.add(resultAnime);
+                BibliAdapter adapter = new BibliAdapter(resultAnime);
+                recyclerView.setAdapter(adapter);
+                //resultBibli2.add(resultAnime);
             }
 
             @Override
             public void onFailure(Call<KitsuSimple> call, Throwable t) {
+                SharedPreferences.Editor edit = sharedPreferences.edit();
+                edit.putString(PREFS_INDEX, "null3");
+                edit.commit();
 
             }
         });
-        return resultBibli.get(0);
+        //return resultBibli2.get(1);
     }
 
     public void GetUserID (final RecyclerView recyclerView){

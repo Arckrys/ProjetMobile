@@ -33,7 +33,7 @@ public interface KitsuService {
     Call<UserPage.KitsuBibliAnime> getKitsuBibliAnime(@Query("filter[userId]") String access);
 
     @GET("/api/edge/library-entries/{id}/anime")
-    Call<UserPage.KitsuSimple> getKitsuBibli(@Path("id") int id);
+    Call<UserPage.KitsuSimple> getKitsuBibli(@Path ("id") int id);
 
     @GET("/api/edge/users?filter[name]=<username>")
     Call<UserPage.KitsuUser> getKitsuUser (@Query("filter[name]") String user);
