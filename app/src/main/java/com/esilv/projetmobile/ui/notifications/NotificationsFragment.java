@@ -75,7 +75,6 @@ public class NotificationsFragment extends Fragment {
         login = root.findViewById(R.id.login);
         username = root.findViewById(R.id.username);
         password = root.findViewById(R.id.password);
-        access = root.findViewById(R.id.test);
         sharedPreferences = getContext().getSharedPreferences(PREFS, MODE_PRIVATE);
 
         if (sharedPreferences.contains(PREFS_USER)) {
@@ -94,7 +93,6 @@ public class NotificationsFragment extends Fragment {
                 edit.commit();
                 String pass = password.getText().toString();
                 LoginUser(user, pass, v);
-                access.setText(sharedPreferences.getString(PREFS_ACCESS, ""));
 
 
             }
