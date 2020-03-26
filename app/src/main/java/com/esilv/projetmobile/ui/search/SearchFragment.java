@@ -29,7 +29,6 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class SearchFragment extends Fragment {
 
-    private SearchViewModel searchViewModel;
 
     public void loadSearch(final RecyclerView recyclerView, boolean isManga, String searchText){
         Retrofit retrofit = new Retrofit.Builder()
@@ -70,8 +69,6 @@ public class SearchFragment extends Fragment {
     }
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        searchViewModel =
-                ViewModelProviders.of(this).get(SearchViewModel.class);
         View root = inflater.inflate(R.layout.fragment_search, container, false);
 
         final CheckBox manga_check = root.findViewById(R.id.manga_check);

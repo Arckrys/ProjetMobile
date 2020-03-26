@@ -39,9 +39,6 @@ public interface KitsuService {
     @GET("/api/edge/trending/anime")
     Call<HomeFragment.KitsuManga> getKitsuTrendingAnime();
 
-    @GET("/api/edge/trending/anime")
-    Call<HomeFragment.KitsuManga> getKitsuManga();
-
     @POST("/api/oauth/token")
     Call<NotificationsFragment.KitsuLogin> getKitsuLogin(@Query("grant_type") String type,
                                                          @Query("username") String username,
