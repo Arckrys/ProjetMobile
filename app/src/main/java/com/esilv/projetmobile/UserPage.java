@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -45,7 +46,7 @@ import static com.esilv.projetmobile.ui.notifications.NotificationsFragment.PREF
 
 public class UserPage extends Fragment {
     SharedPreferences sharedPreferences;
-    EditText indexAnime;
+    TextView username;
 
 
     public class KitsuUser{
@@ -196,9 +197,6 @@ public class UserPage extends Fragment {
                         }
                     });
                 }
-                //resultBibli.dataList = resultAni;
-                //BibliAdapter adapter = new BibliAdapter(resultBibli);
-                //recyclerView.setAdapter(adapter);
             }
 
             @Override
@@ -206,43 +204,6 @@ public class UserPage extends Fragment {
             }
         });
 
-    }
-
-    public void GetAnime (String url, final RecyclerView recyclerView)
-    {
-        final ArrayList<KitsuSimple> resultBibli2 = new ArrayList<>();
-        final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("https://kitsu.io")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        final KitsuService service = retrofit.create(KitsuService.class);
-        int url2;
-        url2 = Integer.parseInt(url);
-        SharedPreferences.Editor edit = sharedPreferences.edit();
-        edit.putString(PREFS_INDEX, url);
-        edit.commit();
-        Call<KitsuSimple> call = service.getKitsuBibli(url);
-        call.enqueue(new Callback<KitsuSimple>() {
-            @Override
-            public void onResponse(Call<KitsuSimple> call, Response<KitsuSimple> response) {
-                KitsuSimple resultAnime = response.body();
-                SharedPreferences.Editor edit = sharedPreferences.edit();
-                edit.putString(PREFS_INDEX, "null4");
-                edit.commit();
-                //BibliAdapter adapter = new BibliAdapter(resultAnime);
-                //recyclerView.setAdapter(adapter);
-                //resultBibli2.add(resultAnime);
-            }
-
-            @Override
-            public void onFailure(Call<KitsuSimple> call, Throwable t) {
-                SharedPreferences.Editor edit = sharedPreferences.edit();
-                edit.putString(PREFS_INDEX, "null3");
-                edit.commit();
-
-            }
-        });
-        //return resultBibli2.get(1);
     }
 
     public void GetUserID (final RecyclerView recyclerView){
@@ -272,11 +233,9 @@ public class UserPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_user_page, container, false);
-        indexAnime = root.findViewById(R.id.test);
 
         RecyclerView recyclerViewBibli = root.findViewById(R.id.recyclerViewBibli);
         GetUserID(recyclerViewBibli);
-        indexAnime.setText(sharedPreferences.getString(PREFS_INDEX, ""));
         return root;
     }
 }

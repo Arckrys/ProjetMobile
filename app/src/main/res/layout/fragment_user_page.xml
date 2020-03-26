@@ -10,7 +10,7 @@
         android:id="@+id/Username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/manga_trending_list"
+        android:text="Bibliothèque"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,29 +21,20 @@
         android:id="@+id/created"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/manga_trending_list"
+        android:text="Banane"
         android:textAlignment="center"
         android:textSize="20sp"
         app:layout_constraintEnd_toStartOf="@id/Username"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/Username"/>
 
-    <EditText
-        android:id="@+id/test"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Access"
-        app:layout_constraintEnd_toStartOf="@id/created"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/created" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewBibli"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@id/test"
+        app:layout_constraintEnd_toStartOf="@id/created"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/test"
+        app:layout_constraintTop_toBottomOf="@id/created"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:spanCount="3"
         />
