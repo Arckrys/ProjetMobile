@@ -69,7 +69,12 @@ public class BibliAdapter extends RecyclerView.Adapter<BibliAdapter.BibliViewHol
         bundle.putString("InfoTitle", results.attributes.canonicalTitle);
         bundle.putString("InfoImage",results.attributes.posterImage.posterURL);
         bundle.putString("InfoDesc",results.attributes.synopsis);
-        bundle.putString("InfoRating",results.attributes.averageRating);
+        if(results.attributes.averageRating == null){
+            bundle.putString("InfoRating","no data");
+        }
+        else{
+            bundle.putString("InfoRating",results.attributes.averageRating);
+        }
         bundle.putString("InfoStart",results.attributes.startDate);
         if(results.attributes.endDate == null){
             bundle.putString("InfoEnd","ongoing");
