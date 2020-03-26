@@ -303,7 +303,7 @@ public class UserPage extends Fragment {
                             KitsuSimple resultAnime = response.body();
                             resultBibli.dataList.add(resultAnime.datasimple);
                             SharedPreferences.Editor edit = sharedPreferences.edit();
-                            String string = String.valueOf(resultBibli.dataList.get(0).attributes.canonicalTitle);
+                            String string = String.valueOf(resultBibli.dataList.get(0).attributes.posterImage);
                             edit.putString(PREFS_INDEX, string);
                             edit.commit();
                             if (resultBibli.dataList.size() == 10){
